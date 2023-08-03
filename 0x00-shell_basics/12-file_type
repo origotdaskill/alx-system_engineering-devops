@@ -1,2 +1,3 @@
 #!/bin/bash
-echo /tmp/iamafile: (file -b /tmp/iamafile)
+echo "/tmp/iamafile:" 
+file -b /tmp/iamafile
