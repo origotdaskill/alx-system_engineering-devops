@@ -1,4 +1,2 @@
 #!/bin/bash
-set -o posix ; set
-printenv
-declare -F
+set -o posix ; set ; printenv ; declare -F
