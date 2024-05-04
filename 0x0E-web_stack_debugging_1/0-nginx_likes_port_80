@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
 
-# Check if Nginx is already configured to listen on port 80
-nginx_config="/etc/nginx/sites-enabled/default"
-if grep -q "listen\s\+80;" "$nginx_config"; then
-    echo "Nginx is already configured to listen on port 80."
-else
-    # Change the listening port from 8080 to 80 in the Nginx configuration
-    sudo sed -i "s/8080/80/" "$nginx_config"
-fi
+# Configure Nginx to listen on port 80
+sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
 
-# Check if Nginx service is running
-if sudo service nginx status | grep -q "active (running)"; then
-    # Restart Nginx to apply changes
-    sudo service nginx restart
-    echo "Nginx restarted."
+# Restart Nginx
+sudo service nginx restart
+
+# Check if Nginx is running and listening on port 80
+nginx_status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
+if [ "$nginx_status" -eq 200 ]; then
+    echo "Nginx is running and returns HTTP 200 on port 80."
 else
-    echo "Nginx is not running. Please start Nginx first."
+    echo "Nginx is not returning HTTP 200 on port 80."
 fi

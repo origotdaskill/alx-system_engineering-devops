@@ -1,2 +1,2 @@
-Nginx is already configured to listen on port 80.
-Nginx is not running. Please start Nginx first.
+Restarting nginx: nginx.
+Nginx is running and returns HTTP 200 on port 80.
