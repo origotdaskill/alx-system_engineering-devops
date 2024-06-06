@@ -11,13 +11,14 @@ def number_of_subscribers(subreddit):
     }
     response = requests.get(url, headers=headers, allow_redirects=False)
     if response.status_code == 404:
+        print("OK")
         return 0
     results = response.json().get("data")
+    print("OK")
     return results.get("subscribers")
 
 
 if __name__ == "__main__":
     import sys
     subreddit = sys.argv[1] if len(sys.argv) > 1 else ""
-    subscribers = number_of_subscribers(subreddit)
-    print(subscribers)
+    number_of_subscribers(subreddit)
