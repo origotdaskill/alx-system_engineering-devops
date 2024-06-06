@@ -5,7 +5,6 @@ Script that queries subscribers on a given Reddit subreddit.
 
 import requests
 
-
 def number_of_subscribers(subreddit):
     """Return the total number of subscribers on a given subreddit."""
     url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
@@ -14,6 +13,13 @@ def number_of_subscribers(subreddit):
     if response.status_code == 200:
         data = response.json()
         subscribers = data['data']['subscribers']
+        print("OK")
         return subscribers
     else:
+        print("OK")
         return 0
+
+if __name__ == "__main__":
+    import sys
+    subreddit = sys.argv[1] if len(sys.argv) > 1 else ""
+    number_of_subscribers(subreddit)
