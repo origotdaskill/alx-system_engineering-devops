@@ -14,3 +14,10 @@ def number_of_subscribers(subreddit):
         return 0
     results = response.json().get("data")
     return results.get("subscribers")
+
+
+if __name__ == "__main__":
+    import sys
+    subreddit = sys.argv[1] if len(sys.argv) > 1 else ""
+    subscribers = number_of_subscribers(subreddit)
+    print(subscribers)
