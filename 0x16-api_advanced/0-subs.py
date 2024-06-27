@@ -18,10 +18,10 @@ def number_of_subscribers(subreddit):
         return subscribers
     except requests.exceptions.HTTPError as http_err:
         if response.status_code == 404:
-            print(f"Subreddit '{subreddit}' not found.")
+            return 0  # Subreddit not found, return 0 subscribers
         else:
             print(f"HTTP error occurred: {http_err}")
-        return 0
+            return 0
     except requests.exceptions.RequestException as err:
         print(f"Request error occurred: {err}")
         return 0
@@ -32,4 +32,7 @@ def number_of_subscribers(subreddit):
 if __name__ == "__main__":
     subreddit = input("Enter subreddit name: ")
     subscribers = number_of_subscribers(subreddit)
-    print(f"Subreddit '{subreddit}' has {subscribers} subscribers.")
+    if subscribers == 0:
+        print(f"Subreddit '{subreddit}' does not exist or is private.")
+    else:
+        print(f"Subreddit '{subreddit}' has {subscribers} subscribers."
