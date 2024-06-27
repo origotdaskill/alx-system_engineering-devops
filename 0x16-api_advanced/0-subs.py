@@ -8,22 +8,22 @@ import requests
 
 def number_of_subscribers(subreddit):
     """Return the total number of subscribers on a given subreddit."""
-    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
     headers = {"User-Agent": "Mozilla/5.0"}
     try:
         response = requests.get(url, headers=headers, allow_redirects=False)
-        if response.status_code == 200:
-            data = response.json()
-            subscribers = data['data']['subscribers']
-            return subscribers
-        elif response.status_code == 404:
+        response.raise_for_status()  # Raise an error for bad status codes
+        data = response.json()
+        subscribers = data['data']['subscribers']
+        return subscribers
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 404:
             print(f"Subreddit '{subreddit}' not found.")
-            return 0
         else:
-            print(f"Error: Status code {response.status_code}")
-            return 0
-    except requests.exceptions.RequestException as e:
-        print(f"Request error: {e}")
+            print(f"HTTP error occurred: {http_err}")
+        return 0
+    except requests.exceptions.RequestException as err:
+        print(f"Request error occurred: {err}")
         return 0
 
 # Example usage:
