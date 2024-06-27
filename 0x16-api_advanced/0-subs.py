@@ -1,38 +1,24 @@
 #!/usr/bin/python3
 """
-Script that queries subscribers on a given Reddit subreddit.
+Function that queries the Reddit API and returns the number of subscribers
+(not active users, total subscribers) for a given subreddit.
+If an invalid subreddit is given, the function should return 0
 """
 
 import requests
 
 
 def number_of_subscribers(subreddit):
-    """Return the total number of subscribers on a given subreddit."""
-    url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {"User-Agent": "Mozilla/5.0"}
-    try:
-        response = requests.get(url, headers=headers, allow_redirects=False)
-        response.raise_for_status()  # Raise an error for bad status codes
-        data = response.json()
-        subscribers = data['data']['subscribers']
-        return subscribers
-    except requests.exceptions.HTTPError as http_err:
-        if response.status_code == 404:
-            return 0  # Subreddit not found, return 0 subscribers
-        else:
-            print(f"HTTP error occurred: {http_err}")
-            return 0
-    except requests.exceptions.RequestException as err:
-        print(f"Request error occurred: {err}")
-        return 0
+    """
+    Function that queries the Reddit API
+    - If not a valid subreddit, return 0.
+    """
+    req = requests.get(
+        "https://www.reddit.com/r/{}/about.json".format(subreddit),
+        headers={"User-Agent": "Custom"},
+    )
 
-# Example usage:
-
-
-if __name__ == "__main__":
-    subreddit = input("Enter subreddit name: ")
-    subscribers = number_of_subscribers(subreddit)
-    if subscribers == 0:
-        print(f"Subreddit '{subreddit}' does not exist or is private.")
+    if req.status_code == 200:
+        return req.json().get("data").get("subscribers")
     else:
-        print(f"Subreddit '{subreddit}' has {subscribers} subscribers."
+        return 0
